@@ -1,2 +1,13 @@
 # decoders
-Repository contains implementations of encoders and decoders for some encoding algorithms
+
+Implementations of encoders and decoders for some encoding algorithms.
+
+## Implemented algoritms
+
+1. Primitive narrow-sense binary BCH codes ([about](https://en.wikipedia.org/wiki/BCH_code)) with Berlecamp-Massey decoder ([about](https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm)).
+
+2. Primitive narrow-sense Reed-Solomon codes ([about](https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction)) with Sugiyama decoder (based on the [extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)).
+
+## Description
+
+See [description.pdf](./description.pdf).

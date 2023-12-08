@@ -1,0 +1,13 @@
+/.vscode/
+
+/bin/
+/build/
+
+input*.txt
+output*.txt
+
+*.folded
+*.perf
+*.svg
+*.data
+*.data.old
