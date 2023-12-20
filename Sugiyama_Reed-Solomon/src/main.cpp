@@ -24,13 +24,7 @@ struct GF_poly2 {
                                                           primitive_polynom(primitive_polynom) {
         assert(primitive_polynom != 0);
 
-        Element primitive_element;
-        for (Element a = 1; a < size; ++a) {
-            primitive_element = a;
-            if (is_primitive_element(primitive_element))
-                break;
-        }
-        assert(is_primitive_element(primitive_element));
+        Element primitive_element = 2;
 
         deg_to_e.resize(size);
         e_to_deg.resize(size);
@@ -149,8 +143,6 @@ private:
     std::vector<Element> deg_to_e;
     std::vector<deg_t> e_to_deg;
 
-    inline void add_inplace_no_cache(Element &a, Element b) const { a ^= b; }
-
     Element mul_no_cache(Element a, Element b) const {
         Element old_a = a;
         a = 0;
@@ -167,20 +159,6 @@ private:
             a ^= primitive_polynom << deg_diff;
         }
         return a;
-    }
-
-    bool is_primitive_element(Element x) const {
-        Element res = 1;
-        if (p_deg(primitive_polynom) == 0) return res;
-        deg_t d = p_deg(primitive_polynom) - 1;
-
-        while (true) {
-            res = rem_no_cache(mul_no_cache(x, res));
-            add_inplace_no_cache(res, p_at(primitive_polynom, d));
-            if (d == 0) break;
-            --d;
-        }
-        return res == 0;
     }
 };
 

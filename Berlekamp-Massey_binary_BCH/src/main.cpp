@@ -86,13 +86,7 @@ struct GF {
 
     explicit GF(std::uint64_t const &primitive_polynom) : size(u64(1) << p_deg(primitive_polynom)),
                                                           primitive_polynom(primitive_polynom) {
-        element_t primitive_element;
-        for (element_t a = 1; a < size; ++a) {
-            primitive_element = a;
-            if (substitute(primitive_polynom, primitive_element) == 0)
-                break;
-        }
-        assert(substitute(primitive_polynom, primitive_element) == 0);
+        element_t primitive_element = 2;
 
         primitive_deg_to_element.resize(size);
         element_to_primitive_deg.resize(size);
@@ -130,27 +124,6 @@ struct GF {
             a ^= old_a << d;
         }
         return a;
-    }
-
-    element_t rem_no_cache(element_t a) const {
-        while (p_deg(a) >= p_deg(primitive_polynom)) {
-            GF::deg_t deg_diff = p_deg(a) - p_deg(primitive_polynom);
-            a ^= primitive_polynom << deg_diff;
-        }
-        return a;
-    }
-
-    element_t substitute(std::uint64_t const& poly, element_t const &x) const {
-        element_t res = (poly == 0) ? 0 : 1;
-        if (p_deg(poly) == 0) return res;
-        GF::deg_t d = p_deg(poly) - 1;
-        while (true) {
-            res = rem_no_cache(mul_no_cache(x, res));
-            add_inplace_no_cache(res, p_at(poly, d));
-            if (d == 0) break;
-            --d;
-        }
-        return res;
     }
 
     inline element_t mul_cached(element_t const &a, element_t const &b) const {
@@ -237,7 +210,7 @@ struct BCH {
     double simulate(double noise_level, int num_of_iterations, int max_errors) {
         std::random_device rd;
         std::mt19937 gen32(rd());
-        std::uniform_int_distribution uniform_int_dist(0, 1);
+        std::uniform_int_distribution<std::uint8_t> uniform_int_dist(0, 1);
         std::bernoulli_distribution bernoulli_dist(noise_level);
 
         int it, errors;
